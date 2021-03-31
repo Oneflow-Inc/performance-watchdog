@@ -18,6 +18,10 @@ const params = {
                     Name: "Model",
                     Value: "ResNet50",
                 },
+                {
+                    Name: "Branch",
+                    Value: "Test",
+                },
             ],
             Unit: "None",
             Value: 100.0,
