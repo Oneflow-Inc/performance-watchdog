@@ -6,6 +6,11 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      placeholder:
+        description: "placeholder, no effect"
+        required: false
 
 jobs:
   rerun:
