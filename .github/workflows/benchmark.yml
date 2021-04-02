@@ -35,6 +35,6 @@ jobs:
             --name perf-dog-run-id-${{ github.run_id }}-model-${{ matrix.model }} \
             -w $PWD -v $PWD:$PWD \
             -v /dataset:/dataset -v /model_zoo:/model_zoo \
-            -e ONEFLOW_BENCHMARK_DIR=${OneFlow-Benchmark} \
+            -e ONEFLOW_BENCHMARK_DIR=${PWD}/OneFlow-Benchmark \
             oneflow-test:$USER \
             bash -c "$INSTALL_CMD && bash models/${{ matrix.model }}.sh"
