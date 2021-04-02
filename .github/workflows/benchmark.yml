@@ -16,6 +16,10 @@ jobs:
       matrix:
         model: ["resnet50"]
     steps:
+      - name: Fix permissions
+        if: matrix.test_suite != 'mac'
+        run: |
+          docker run --rm -v $PWD:/p -w /p busybox chmod -R o+w .
       - uses: actions/checkout@v2
       - name: Checkout OneFlow-Benchmark
         uses: actions/checkout@v2
@@ -32,4 +36,4 @@ jobs:
             -w $PWD -v $PWD:$PWD \
             -v /dataset:/dataset -v /model_zoo:/model_zoo \
             oneflow-test:$USER \
-            bash -c "$INSTALL_CMD && ls"
+            bash -c "$INSTALL_CMD && bash models/${{ matrix.model }}.sh"
