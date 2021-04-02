@@ -12,8 +12,11 @@ def process_one_line(line: str):
     if "train" in line:
         print("[process]", line.strip())
         throughput = re.search("samples/s: (.+?)\s", line.strip()).group(1)
-        throughput = float(throughput)
-        print("[throughput]", throughput)
+        if throughput is None:
+            print("[ignore]", line.strip())
+        else:
+            throughput = float(throughput)
+            print("[throughput]", throughput)
     else:
         print("[ignore]", line.strip())
 
