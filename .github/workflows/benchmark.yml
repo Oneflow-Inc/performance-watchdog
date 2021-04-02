@@ -1,4 +1,4 @@
-name: "Re-run failed job due to network"
+name: "Performance Benchmark"
 on:
   schedule:
     # * is a special character in YAML so you have to quote this string
@@ -14,7 +14,7 @@ on:
 
 jobs:
   rerun:
-    name: Performance Benchmark
+    name: Throughput
     runs-on: [self-hosted, linux, gpu]
     strategy:
       max-parallel: 5
