@@ -35,11 +35,17 @@ jobs:
         run: |
           set -x
           INSTALL_CMD="python3 -m pip install oneflow --user -f https://staging.oneflow.info/branch/master/cu102"
+          container_name="perf-dog-run-id-${{ github.run_id }}-model-${{ matrix.model }}"
+          echo "container_name=$container_name" >> $GITHUB_ENV
           docker run \
             --shm-size=8g --rm \
-            --name perf-dog-run-id-${{ github.run_id }}-model-${{ matrix.model }} \
+            --name $container_name \
             -w $PWD -v $PWD:$PWD \
             -v /dataset:/dataset -v /model_zoo:/model_zoo \
             -e ONEFLOW_BENCHMARK_DIR=${PWD}/OneFlow-Benchmark \
             oneflow-test:$USER \
             bash -c "$INSTALL_CMD && bash models/${{ matrix.model }}.sh"
+      - name: Remove container
+        if: always() && matrix.test_suite != 'mac'
+        run: |
+          docker rm -f ${container_name} || true
