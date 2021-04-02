@@ -11,9 +11,9 @@ args = parser.parse_args()
 def process_one_line(line: str):
     if "train" in line:
         print("[process]", line.strip())
-        throughput = re.search("samples/s: (.+?)\s", line.strip()).group(1)
+        throughput = re.search("samples/s: (.+?)\s", line.strip())
         if throughput is not None:
-            throughput = float(throughput)
+            throughput = float(throughput.group(1))
             print("[throughput]", throughput)
     else:
         print("[ignore]", line.strip())
