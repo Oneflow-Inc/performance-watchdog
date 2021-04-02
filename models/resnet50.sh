@@ -33,7 +33,7 @@ python3 of_cnn_train_val.py \
      --momentum=0.875 \
      --label_smoothing=0.1 \
      --learning_rate=0.768 \
-     --loss_print_every_n_iter=100 \
+     --loss_print_every_n_iter=1 \
      --batch_size_per_device=${batch_size_per_device} \
      --val_batch_size_per_device=50 \
      --channel_last=False \
