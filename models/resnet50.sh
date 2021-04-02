@@ -9,8 +9,17 @@ rm -rf ./output/snapshots/*
 export PYTHONUNBUFFERED=1
 export NCCL_LAUNCH_MODE=PARALLEL
 
+vram_size=$(nvidia-smi --query-gpu="memory.total" --id=0 --format=csv,noheader,nounits)
+
+if (( ${vram_size} > 8000 )); then
+    batch_size_per_device=72
+fi
+
+if (( ${vram_size} > 16000 )); then
+    batch_size_per_device=144
+fi
+
 DATA_ROOT=/dataset/ImageNet/ofrecord
-batch_size_per_device=96
 gpu_num_per_node=1
 iter_num=20
 python3 of_cnn_train_val.py \
