@@ -38,7 +38,7 @@ jobs:
           container_name="perf-dog-run-id-${{ github.run_id }}-model-${{ matrix.model }}"
           echo "container_name=$container_name" >> $GITHUB_ENV
           num_gpu=$(nvidia-smi --query-gpu=name --format=csv,noheader | wc -l)
-          post_process="python3 postprocess/${{ matrix.model }}.py --stdin"
+          post_process="python3 ${PWD}/postprocess/${{ matrix.model }}.py --stdin"
           last_gpu_id=$((num_gpu - 1))
           docker run \
             --shm-size=8g --rm \
