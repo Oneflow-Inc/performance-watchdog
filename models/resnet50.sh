@@ -12,7 +12,7 @@ export NCCL_LAUNCH_MODE=PARALLEL
 vram_size=$(nvidia-smi --query-gpu="memory.total" --id=0 --format=csv,noheader,nounits)
 
 if (( ${vram_size} > 8000 )); then
-    batch_size_per_device=70
+    batch_size_per_device=72
 fi
 
 if (( ${vram_size} > 16000 )); then
