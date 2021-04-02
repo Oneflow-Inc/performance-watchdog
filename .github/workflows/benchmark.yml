@@ -1,0 +1,35 @@
+name: "Re-run failed job due to network"
+on:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron: "*/45 * * * *"
+  push:
+    branches:
+      - main
+
+jobs:
+  rerun:
+    name: Performance Benchmark
+    runs-on: [self-hosted, linux, gpu]
+    strategy:
+      max-parallel: 5
+      matrix:
+        model: ["resnet50"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Checkout OneFlow-Benchmark
+        uses: actions/checkout@v2
+        with:
+          repository: Oneflow-Inc/OneFlow-Benchmark
+          path: OneFlow-Benchmark
+      - name: "Run benchmark"
+        run: |
+          set -x
+          INSTALL_CMD="python3 -m pip install oneflow --user -f https://staging.oneflow.info/branch/master/cu102"
+          docker run \
+            --env ONEFLOW_WHEEL_PATH=/home/ci-user/runners/gpu/_work/oneflow/oneflow/wheel_tmp \
+            --name perf-dog-run-id-${{ github.run_id }}-${{ matrix.model }}-test --shm-size=8g --rm \
+            -w $PWD -v $PWD:PWD \
+            -v /dataset:/dataset -v /model_zoo:/model_zoo \
+            oneflow-test:$USER \
+            bash -c "$INSTALL_CMD && ls"
