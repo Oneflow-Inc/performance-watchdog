@@ -37,10 +37,13 @@ jobs:
           INSTALL_CMD="python3 -m pip install oneflow --user -f https://staging.oneflow.info/branch/master/cu102"
           container_name="perf-dog-run-id-${{ github.run_id }}-model-${{ matrix.model }}"
           echo "container_name=$container_name" >> $GITHUB_ENV
+          num_gpu=$(nvidia-smi --query-gpu=name --format=csv,noheader | wc -l)
+          last_gpu_id=$((num_gpu - 1))
           docker run \
             --shm-size=8g --rm \
             --name $container_name \
             -w $PWD -v $PWD:$PWD \
+            -e CUDA_VISIBLE_DEVICES=$last_gpu_id \
             -v /dataset:/dataset -v /model_zoo:/model_zoo \
             -e ONEFLOW_BENCHMARK_DIR=${PWD}/OneFlow-Benchmark \
             oneflow-test:$USER \
