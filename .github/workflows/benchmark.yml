@@ -43,7 +43,7 @@ jobs:
           container_name="perf-dog-run-id-${{ github.run_id }}-model-${{ matrix.model }}"
           echo "container_name=$container_name" >> $GITHUB_ENV
           num_gpu=$(nvidia-smi --query-gpu=name --format=csv,noheader | wc -l)
-          post_process="python3 ${PWD}/postprocess/${{ matrix.model }}.py --stdin --model ${{ matrix.model }} --branch ${{ matrix.branch }}"
+          post_process="python3 ${PWD}/postprocess/${{ matrix.model }}.py --stdin --model ${{ matrix.model }} --branch ${{ matrix.branch }} --upload_cw"
           last_gpu_id=$((num_gpu - 1))
           docker run \
             --shm-size=8g --rm \
