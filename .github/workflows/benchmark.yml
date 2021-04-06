@@ -20,6 +20,7 @@ jobs:
       max-parallel: 5
       matrix:
         model: ["resnet50"]
+        branch: ["master"]
     steps:
       - name: Fix permissions
         if: matrix.test_suite != 'mac'
@@ -34,11 +35,11 @@ jobs:
       - name: "Run benchmark"
         run: |
           set -x
-          INSTALL_CMD="python3 -m pip install oneflow --user -f https://staging.oneflow.info/branch/master/cu102"
+          INSTALL_CMD="python3 -m pip install oneflow --user -f https://staging.oneflow.info/branch/${{ matrix.branch }}/cu102"
           container_name="perf-dog-run-id-${{ github.run_id }}-model-${{ matrix.model }}"
           echo "container_name=$container_name" >> $GITHUB_ENV
           num_gpu=$(nvidia-smi --query-gpu=name --format=csv,noheader | wc -l)
-          post_process="python3 ${PWD}/postprocess/${{ matrix.model }}.py --stdin"
+          post_process="python3 ${PWD}/postprocess/${{ matrix.model }}.py --stdin --model ${{ matrix.model }} --branch ${{ matrix.branch }}"
           last_gpu_id=$((num_gpu - 1))
           docker run \
             --shm-size=8g --rm \

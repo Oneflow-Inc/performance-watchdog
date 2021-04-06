@@ -1,11 +1,23 @@
 import sys
 import re
 import argparse
+import subprocess
+import statistics
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--stdin", default=False, action="store_true", required=False)
 parser.add_argument("--test", default=False, action="store_true", required=False)
+parser.add_argument("--test", default=False, action="store_true", required=False)
+parser.add_argument("--upload_cw", default=False, action="store_true", required=False)
+parser.add_argument("--model", type=str, required=True)
+parser.add_argument("--branch", type=str, required=True)
 args = parser.parse_args()
+
+
+def get_gpu_name():
+    return subprocess.check_output(
+        "nvidia-smi --query-gpu=name --id=0 --format=csv,noheader", shell=True
+    ).strip()
 
 
 def process_one_line(line: str):
@@ -15,6 +27,7 @@ def process_one_line(line: str):
         if throughput is not None:
             throughput = float(throughput.group(1))
             print("[throughput]", throughput)
+            return {"throughput": throughput}
 
 
 def test():
@@ -23,7 +36,30 @@ def test():
 
 
 if args.stdin:
+    throughputs = []
     for line in sys.stdin:
-        process_one_line(line)
+        processed = process_one_line(line)
+        if processed is not None:
+            throughputs.append(processed["throughput"])
+    if args.upload_cw:
+        import boto3
+
+        client = boto3.client("cloudwatch")
+        response = client.put_metric_data(
+            Namespace="OneFlow/Performance",
+            MetricData=[
+                {
+                    "MetricName": "Throughput",
+                    "Dimensions": [
+                        {"Name": "Model", "Value": args.model,},
+                        {"Name": "Branch", "Value": args.branch,},
+                        {"Name": "GPU", "Value": get_gpu_name(),},
+                    ],
+                    "Unit": "None",
+                    "Value": statistics.median(throughputs),
+                },
+            ],
+        )
+
 if args.test:
     test()
