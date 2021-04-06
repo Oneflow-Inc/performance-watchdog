@@ -59,6 +59,7 @@ if args.stdin:
                 },
             ],
         )
+        print(response)
 
 if args.test:
     test()
