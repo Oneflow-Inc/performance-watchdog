@@ -16,6 +16,7 @@ jobs:
   rerun:
     name: Throughput
     runs-on: [self-hosted, linux, gpu]
+    continue-on-error: true
     strategy:
       max-parallel: 5
       matrix:
