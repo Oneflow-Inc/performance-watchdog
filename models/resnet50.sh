@@ -1,6 +1,7 @@
 set -ex
 
 benchmark_dir=${ONEFLOW_BENCHMARK_DIR:-"$PWD"}
+gpu_num_per_node=${ONEFLOW_BENCHMARK_GPU_NUM_PER_NODE:-1}
 cd $benchmark_dir/Classification/cnns
 
 rm -rf core.*
@@ -20,7 +21,6 @@ if (( ${vram_size} > 16000 )); then
 fi
 
 DATA_ROOT=/dataset/ImageNet/ofrecord
-gpu_num_per_node=1
 iter_num=20
 python3 of_cnn_train_val.py \
      --train_data_dir=$DATA_ROOT/train \

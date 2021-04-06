@@ -10,6 +10,7 @@ parser.add_argument("--test", default=False, action="store_true", required=False
 parser.add_argument("--upload_cw", default=False, action="store_true", required=False)
 parser.add_argument("--model", type=str, required=True)
 parser.add_argument("--branch", type=str, required=True)
+parser.add_argument("--gpu_num_per_node", type=int, required=True)
 args = parser.parse_args()
 
 
@@ -64,6 +65,10 @@ if args.stdin:
                         {"Name": "Model", "Value": args.model,},
                         {"Name": "Branch", "Value": args.branch,},
                         {"Name": "GPU", "Value": get_gpu_name(),},
+                        {
+                            "Name": "GPU Number per Node",
+                            "Value": args.gpu_num_per_node,
+                        },
                     ],
                     "Unit": "None",
                     "Value": statistics.median(throughputs),

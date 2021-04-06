@@ -21,6 +21,7 @@ jobs:
       matrix:
         model: ["resnet50"]
         branch: ["master"]
+        gpu_num_per_node: [1, 4]
     steps:
       - name: Fix permissions
         if: matrix.test_suite != 'mac'
@@ -52,6 +53,7 @@ jobs:
             -e CUDA_VISIBLE_DEVICES=$last_gpu_id \
             -v /dataset:/dataset -v /model_zoo:/model_zoo \
             -e ONEFLOW_BENCHMARK_DIR=${PWD}/OneFlow-Benchmark \
+            -e ONEFLOW_BENCHMARK_GPU_NUM_PER_NODE=${{ matrix.gpu_num_per_node }} \
             oneflow-test:$USER \
             bash -c "$INSTALL_CMD && bash models/${{ matrix.model }}.sh" | ${post_process}
       - name: Remove container
