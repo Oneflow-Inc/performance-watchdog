@@ -67,7 +67,7 @@ if args.stdin:
                         {"Name": "GPU", "Value": get_gpu_name(),},
                         {
                             "Name": "GPU Number per Node",
-                            "Value": args.gpu_num_per_node,
+                            "Value": str(args.gpu_num_per_node),
                         },
                     ],
                     "Unit": "None",
