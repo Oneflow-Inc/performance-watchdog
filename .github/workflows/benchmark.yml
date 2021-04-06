@@ -44,12 +44,10 @@ jobs:
           container_name="perf-dog-run-id-${{ github.run_id }}-model-${{ matrix.model }}"
           echo "container_name=$container_name" >> $GITHUB_ENV
           num_gpu=$(nvidia-smi --query-gpu=name --format=csv,noheader | wc -l)
-          last_gpu_id=$((num_gpu - 1))
           docker run \
             --shm-size=8g --rm \
             --name $container_name \
             -w $PWD -v $PWD:$PWD \
-            -e CUDA_VISIBLE_DEVICES=$last_gpu_id \
             -v /dataset:/dataset -v /model_zoo:/model_zoo \
             -e ONEFLOW_BENCHMARK_DIR=${PWD}/OneFlow-Benchmark \
             -e ONEFLOW_BENCHMARK_GPU_NUM_PER_NODE=${{ matrix.gpu_num_per_node }} \
