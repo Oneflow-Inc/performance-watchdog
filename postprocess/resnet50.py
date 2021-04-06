@@ -14,9 +14,13 @@ args = parser.parse_args()
 
 
 def get_gpu_name():
-    return subprocess.check_output(
-        "nvidia-smi --query-gpu=name --id=0 --format=csv,noheader", shell=True
-    ).strip()
+    return (
+        subprocess.check_output(
+            "nvidia-smi --query-gpu=name --id=0 --format=csv,noheader", shell=True
+        )
+        .decode()
+        .strip()
+    )
 
 
 def process_one_line(line: str):
