@@ -42,8 +42,15 @@ if args.stdin:
             throughputs.append(processed["throughput"])
     if args.upload_cw:
         import boto3
+        from botocore.config import Config
 
-        client = boto3.client("cloudwatch")
+        my_config = Config(
+            region_name="cn-northwest-1",
+            signature_version="v4",
+            retries={"max_attempts": 10, "mode": "standard"},
+        )
+        # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html
+        client = boto3.client("cloudwatch", config=my_config)
         response = client.put_metric_data(
             Namespace="OneFlow/Performance",
             MetricData=[
