@@ -7,7 +7,6 @@ import statistics
 parser = argparse.ArgumentParser()
 parser.add_argument("--stdin", default=False, action="store_true", required=False)
 parser.add_argument("--test", default=False, action="store_true", required=False)
-parser.add_argument("--test", default=False, action="store_true", required=False)
 parser.add_argument("--upload_cw", default=False, action="store_true", required=False)
 parser.add_argument("--model", type=str, required=True)
 parser.add_argument("--branch", type=str, required=True)
