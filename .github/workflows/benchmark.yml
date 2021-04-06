@@ -38,6 +38,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           set -x
+          python3 -m pip install boto3 --user
           INSTALL_CMD="python3 -m pip install oneflow --user -f https://staging.oneflow.info/branch/${{ matrix.branch }}/cu102"
           container_name="perf-dog-run-id-${{ github.run_id }}-model-${{ matrix.model }}"
           echo "container_name=$container_name" >> $GITHUB_ENV
