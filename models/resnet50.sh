@@ -1,7 +1,6 @@
 set -ex
 
 benchmark_dir=${ONEFLOW_BENCHMARK_DIR:-"$PWD"}
-post_process=${ONEFLOW_BENCHMARK_LOG_POST_PROCESS:-"cat"}
 cd $benchmark_dir/Classification/cnns
 
 rm -rf core.*
@@ -45,4 +44,4 @@ python3 of_cnn_train_val.py \
      --gpu_image_decoder=True \
      --num_epoch=1 \
      --model="resnet50" \
-     --num_examples="$(($batch_size_per_device * $gpu_num_per_node * iter_num))" | $post_process
+     --num_examples="$(($batch_size_per_device * $gpu_num_per_node * iter_num))"

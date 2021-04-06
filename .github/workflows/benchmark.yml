@@ -52,9 +52,8 @@ jobs:
             -e CUDA_VISIBLE_DEVICES=$last_gpu_id \
             -v /dataset:/dataset -v /model_zoo:/model_zoo \
             -e ONEFLOW_BENCHMARK_DIR=${PWD}/OneFlow-Benchmark \
-            -e ONEFLOW_BENCHMARK_LOG_POST_PROCESS="${post_process}" \
             oneflow-test:$USER \
-            bash -c "$INSTALL_CMD && bash models/${{ matrix.model }}.sh"
+            bash -c "$INSTALL_CMD && bash models/${{ matrix.model }}.sh" | ${post_process}
       - name: Remove container
         if: always() && matrix.test_suite != 'mac'
         run: |
