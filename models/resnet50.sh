@@ -5,7 +5,7 @@ gpu_num_per_node=${ONEFLOW_BENCHMARK_GPU_NUM_PER_NODE:-1}
 cd $benchmark_dir/Classification/cnns
 
 rm -rf core.*
-rm -rf ./output/snapshots/*
+rm -rf ./output
 
 export PYTHONUNBUFFERED=1
 export NCCL_LAUNCH_MODE=PARALLEL
