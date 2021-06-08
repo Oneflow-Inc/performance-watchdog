@@ -6,6 +6,7 @@ cd $benchmark_dir/Classification/cnns
 
 rm -rf core.*
 rm -rf ./output
+rm -rf ./initial_model
 
 export PYTHONUNBUFFERED=1
 export NCCL_LAUNCH_MODE=PARALLEL
